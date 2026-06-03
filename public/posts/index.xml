@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>nickevangelista&#39;s blog – Posts</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://example.org/posts/</link>
     <description>Recent content in Posts on nickevangelista&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>pt-br</language>
     <lastBuildDate>Wed, 03 Jun 2026 11:16:11 -0300</lastBuildDate>
     
-	  <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -17,10 +17,10 @@
     
     <item>
       <title>Hello World</title>
-      <link>http://localhost:1313/posts/hello-world/</link>
+      <link>https://example.org/posts/hello-world/</link>
       <pubDate>Wed, 03 Jun 2026 11:16:11 -0300</pubDate>
       
-      <guid>http://localhost:1313/posts/hello-world/</guid>
+      <guid>https://example.org/posts/hello-world/</guid>
       <description>
         
         

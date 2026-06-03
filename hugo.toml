@@ -1,5 +1,6 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-us'
+languageCode = 'pt-br'
+defaultContentLanguage = 'pt'
 title = "nickevangelista's blog"
 
 [[menu.main]]
@@ -7,6 +8,13 @@ title = "nickevangelista's blog"
   weight = 1
   url = "https://github.com/nickevangelista"
   params = { icon = "github" }
+
+[[menu.main]]
+  name = "Search"
+  url = "/search/"
+  weight = 50
+  [menu.main.params]
+    type = "search"
 
 [module]
   [[module.imports]]
