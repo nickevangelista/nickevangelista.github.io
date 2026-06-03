@@ -1,6 +1,12 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = "nickevangelista's blog"
+
+[[menu.main]]
+  name = "GitHub"
+  weight = 1
+  url = "https://github.com/nickevangelista"
+  params = { icon = "github" }
 
 [module]
   [[module.imports]]
