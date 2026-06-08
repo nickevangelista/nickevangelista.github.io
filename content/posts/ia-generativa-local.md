@@ -1,5 +1,8 @@
-# Relatório sobre o Uso de IA Generativa Local
-
+---
+title: "Relatório sobre o Uso de IA Generativa Local"
+date: 2026-06-08T11:16:11-03:00
+draft: false
+---
 ## O Lançamento da Ferramenta Odysseus e o Primeiro Contato
 Dia 31 de Maio de 2026 ficou evidenciado ao mundo um dos principais benefícios da IA generativa para código. Nesse dia, uma das vozes mais famosas do Youtube clicou em um botão de “Upload” e o mundo teve o vislumbre dessa resposta. O criador de conteúdo, Pewdiepie, publicou um vídeo falando sobre sua ferramenta “Odysseus”, que basicamente é um “workspace” local para agentes de IA. Naquela semana, só se falava disso. Então, decidi me aventurar e testar essa nova ferramenta. Só tinha um detalhe que era incomum para o meu uso de agentes para código, esse workspace era “designed” para modelos locais, algo que eu nunca tinha testado continuamente. Então, tive minha primeira experiência. Fui ao site do huggingface.com e baixei um modelo (qwen2.5-coder-3b-instruct) que aparentemente era compatível com minha GPU (RTX 3050 mobile no laptop) e “entrei mar adentro”.
 
