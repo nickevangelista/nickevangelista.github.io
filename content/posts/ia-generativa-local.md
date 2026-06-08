@@ -1,6 +1,6 @@
 ---
 title: "Relatório sobre o Uso de IA Generativa Local"
-date: 2026-06-08T11:16:11-03:00
+date: 2026-06-08
 draft: false
 ---
 ## O Lançamento da Ferramenta Odysseus e o Primeiro Contato
