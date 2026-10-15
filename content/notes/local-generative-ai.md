@@ -5,6 +5,8 @@ draft: false
 description: "My first week running a coding model on my own laptop, prompted by PewDiePie's Odysseus workspace: what worked, what didn't, and why the harness matters more than the model."
 aliases:
   - /posts/ia-generativa-local/
+  - /blog/posts/ia-generativa-local/
+  - /blog/notes/local-generative-ai/
 ---
 
 ## The Launch of Odysseus and a First Contact

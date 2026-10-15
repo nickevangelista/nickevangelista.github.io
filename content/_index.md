@@ -1,6 +1,8 @@
 ---
 title: "Nícolas Evangelista"
 description: "Essays and notes by Nícolas Evangelista on technology, artificial intelligence, and the decisions around them."
+aliases:
+  - /blog/
 tagline: "Essays and notes on technology, artificial intelligence, and the decisions around them."
 ---
 

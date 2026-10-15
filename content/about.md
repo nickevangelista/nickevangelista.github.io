@@ -3,6 +3,8 @@ title: "About"
 description: "Nícolas Evangelista is a computer engineering student in southern Brazil who writes about technology, artificial intelligence, and the decisions around them."
 aliases:
   - /sobre/
+  - /blog/about/
+  - /blog/sobre/
 toc: false
 ---
 
