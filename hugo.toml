@@ -8,7 +8,9 @@ title = "Nícolas Evangelista"
   dateFormat = "January 2, 2006"
   images = ["og.png"]
 
+  # Signup form: set enable = true at launch.
   [params.newsletter]
+    enable = false
     username = "nicolasevangelista"
 
   [params.navbar]

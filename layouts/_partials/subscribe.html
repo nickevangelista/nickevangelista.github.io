@@ -1,3 +1,4 @@
+{{- if site.Params.newsletter.enable -}}
 {{- with site.Params.newsletter.username -}}
 <section class="ne-subscribe" aria-labelledby="subscribe-title">
   <h2 id="subscribe-title" class="ne-label">Get new writing by email</h2>
@@ -9,4 +10,5 @@
   </form>
   <p class="ne-fine">Or follow by <a href="{{ "notes/index.xml" | relURL }}">RSS</a>.</p>
 </section>
+{{- end -}}
 {{- end -}}
