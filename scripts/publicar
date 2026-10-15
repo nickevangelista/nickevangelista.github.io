@@ -4,8 +4,8 @@
 Usage: publicar "path/to/Note.md"
 
 Creates content/notes/<slug>/index.md, converts Obsidian-only syntax
-([[links]], ![[images]], %%comments%%), copies images next to the post,
-checks the Hugo build, commits, and asks before pushing.
+([[links]], ![[images]], %%comments%%), copies images next to the post (resized to 1600 px and stripped of
+metadata such as GPS location), checks the Hugo build, commits, and asks before pushing.
 """
 
 import re
@@ -14,11 +14,14 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+import urllib.parse
 from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 POSTS = REPO / "content" / "notes"
+MAX_WIDTH = 1600
+RESIZABLE = {".png", ".jpg", ".jpeg", ".webp"}
 
 
 def slugify(text):
@@ -98,7 +101,14 @@ def main():
             missing.append(name)
             return name
         dest = slugify(src.stem) + src.suffix.lower()
-        shutil.copy2(src, bundle / dest)
+        if src.suffix.lower() in RESIZABLE and shutil.which("magick"):
+            # -strip drops EXIF, including the GPS position phone photos carry.
+            subprocess.run(
+                ["magick", str(src), "-auto-orient", "-strip", "-resize", f"{MAX_WIDTH}x>", str(bundle / dest)],
+                check=True,
+            )
+        else:
+            shutil.copy2(src, bundle / dest)
         return dest
 
     def embed(m):
@@ -109,9 +119,10 @@ def main():
         return ""
 
     def markdown_image(m):
-        alt, target = m.group(1), m.group(2)
+        alt, target = m.group(1), m.group(2).strip("<>")
         if re.match(r"^[a-z]+://", target):
             return m.group(0)
+        target = urllib.parse.unquote(target)
         return f"![{alt}]({copy_image(target)})"
 
     def wikilink(m):
@@ -119,7 +130,7 @@ def main():
         return alias or target.split("#")[0]
 
     body = re.sub(r"%%.*?%%", "", body, flags=re.S)
-    body = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)", markdown_image, body)
+    body = re.sub(r"!\[([^\]]*)\]\((<[^>]+>|[^)\s]+)\)", markdown_image, body)
     body = re.sub(r"!\[\[(.+?)\]\]", embed, body)
     body = re.sub(r"\[\[(.+?)\]\]", wikilink, body)
 

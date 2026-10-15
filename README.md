@@ -29,7 +29,7 @@ Drafts live in Obsidian. To publish one:
 publicar "path/to/Note.md"
 ```
 
-The script creates `content/notes/<slug>/index.md`, turns `[[links]]` into plain text, copies images from `![[...]]` next to the note, checks the build, commits, and asks before pushing. Every push to `main` deploys the site through GitHub Actions (`.github/workflows/hugo.yml`).
+The script creates `content/notes/<slug>/index.md`, turns `[[links]]` into plain text, copies images from `![[...]]` next to the note (resized to 1600 px, with GPS and other metadata stripped), checks the build, commits, and asks before pushing. Every push to `main` deploys the site through GitHub Actions (`.github/workflows/hugo.yml`).
 
 To write directly in the repo, create `content/notes/<slug>.md` with:
 
