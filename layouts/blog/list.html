@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <main id="content" class="ne-page">
+    <header class="ne-hero">
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="ne-tagline">{{ . }}</p>{{ end }}
+    </header>
+    {{- range .Pages.GroupByDate "2006" }}
+      <section aria-labelledby="y{{ .Key }}">
+        <h2 id="y{{ .Key }}" class="ne-year">{{ .Key }}</h2>
+        {{- range .Pages }}
+          <div class="ne-row">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </div>
+        {{- end }}
+      </section>
+    {{- end }}
+  </main>
+{{ end }}

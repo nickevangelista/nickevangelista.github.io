@@ -1,34 +1,64 @@
 # Nícolas Evangelista
 
-Código do site [nickevangelista.github.io/blog](https://nickevangelista.github.io/blog/). Feito com [Hugo](https://gohugo.io/) e o tema [Hextra](https://imfing.github.io/hextra/).
+Source for [nickevangelista.github.io/blog](https://nickevangelista.github.io/blog/), the personal site of Nícolas Evangelista.
 
-## Como publicar
+## What this site is
 
-1. Escreve a nota no Obsidian.
-2. Roda `publicar "caminho/da/Nota.md"`.
+A small, serious publication under my own name. It is a place for essays and notes, not a diary. The model is the analyst's site: a short bio, a clear line of work, and writing that still holds up years later.
 
-O script cria `content/posts/<slug>/index.md`, troca `[[links]]` por texto puro, copia as imagens de `![[...]]` pra pasta do post, testa o build e faz o commit. Antes do push ele pergunta. Cada push na `main` publica o site pelo GitHub Actions (`.github/workflows/hugo.yml`).
+It publishes three kinds of pieces:
 
-Pra escrever direto no repo, crie o `.md` em `content/posts/` com este cabeçalho:
+- **Technical notes:** things I built, bugs I fixed, numbers I measured. Short when the subject is short.
+- **Reading notes:** what I took from a book or paper on neuroscience, philosophy, or anything else, and where I got stuck. Framed as a reader's notes, never as expertise.
+- **Essays:** longer pieces when a subject needs the room.
+
+## Editorial rules
+
+1. Every piece has to pass one test: will it still be factual, respectable, and worth reading in five years?
+2. Nothing about an employer's internals. Lessons, patterns, and reproducible numbers only.
+3. No attacks on named people, and nothing written in anger.
+4. Lead with the conclusion, then the context, then the analysis.
+5. English by default.
+6. The site is the canonical home. Newsletters or other platforms can mirror it later, never replace it.
+
+## Writing and publishing
+
+Drafts live in Obsidian. To publish one:
+
+```bash
+publicar "path/to/Note.md"
+```
+
+The script creates `content/notes/<slug>/index.md`, turns `[[links]]` into plain text, copies images from `![[...]]` next to the note, checks the build, commits, and asks before pushing. Every push to `main` deploys the site through GitHub Actions (`.github/workflows/hugo.yml`).
+
+To write directly in the repo, create `content/notes/<slug>.md` with:
 
 ```yaml
 ---
-title: "Título"
+title: "Title"
 date: 2026-11-03
+description: "One or two sentences shown on the home page."
 draft: false
 ---
 ```
 
-## Rodar local
+## Running locally
 
 ```bash
-mise install    # Hugo e Go nas versões do mise.toml
-./run_hugo.sh   # http://localhost:1313/blog/, com rascunhos
+mise install    # Hugo and Go at the versions in mise.toml
+./run_hugo.sh   # http://localhost:1313/blog/, drafts included
 ```
 
-## Estrutura
+## Design
 
-- `content/posts/`: os posts
-- `content/sobre.md`: a página Sobre
-- `layouts/`: home com os posts agrupados por mês e os favicons
-- `scripts/publicar`: o fluxo Obsidian → site
+Built with [Hugo](https://gohugo.io/) and the [Hextra](https://imfing.github.io/hextra/) theme, restyled to read like a publication rather than documentation:
+
+- [Nord](https://www.nordtheme.com/) palette in both light and dark mode (`assets/css/custom.css`)
+- Source Serif 4 for reading, Inter for the interface
+- Home page with bio and latest writing (`layouts/home.html`), and an archive by year (`layouts/blog/list.html`)
+
+## Layout
+
+- `content/notes/`: everything published
+- `content/about.md`: the About page
+- `scripts/publicar`: the Obsidian-to-site workflow

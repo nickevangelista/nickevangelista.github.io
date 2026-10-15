@@ -1,4 +1,4 @@
 #!/bin/bash
-# Servidor local em http://localhost:1313/blog/ (mostra rascunhos também).
-# Hugo e Go vêm do mise.toml; rode `mise install` uma vez antes.
+# Local preview at http://localhost:1313/blog/, drafts included.
+# Hugo and Go come from mise.toml; run `mise install` once first.
 exec mise exec -- hugo server --buildDrafts

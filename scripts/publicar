@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Publica uma nota do Obsidian como post do site.
+"""Publish an Obsidian note as a note on the site.
 
-Uso: publicar "caminho/da/Nota.md"
+Usage: publicar "path/to/Note.md"
 
-Cria content/posts/<slug>/index.md, converte o que é só do Obsidian
-([[links]], ![[imagens]], %%comentários%%), copia as imagens pra junto do post,
-testa o build do Hugo, faz o commit e pergunta antes do push.
+Creates content/notes/<slug>/index.md, converts Obsidian-only syntax
+([[links]], ![[images]], %%comments%%), copies images next to the post,
+checks the Hugo build, commits, and asks before pushing.
 """
 
 import re
@@ -18,7 +18,7 @@ from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-POSTS = REPO / "content" / "posts"
+POSTS = REPO / "content" / "notes"
 
 
 def slugify(text):
@@ -72,7 +72,7 @@ def main():
         sys.exit(__doc__)
     note = Path(sys.argv[1]).expanduser().resolve()
     if not note.is_file():
-        sys.exit(f"Nota não encontrada: {note}")
+        sys.exit(f"Note not found: {note}")
     vault = find_vault(note)
 
     meta, body = split_front_matter(note.read_text())
@@ -81,9 +81,9 @@ def main():
     bundle = POSTS / slug
     old_post = bundle / "index.md"
     if (POSTS / f"{slug}.md").exists():
-        sys.exit(f"Já existe content/posts/{slug}.md. Renomeia a nota ou apaga o post antigo.")
+        sys.exit(f"content/notes/{slug}.md already exists. Rename the note or delete the old post.")
 
-    # Republicar mantém a data original.
+    # Republishing keeps the original date.
     old_date = get_field(split_front_matter(old_post.read_text())[0], "date") if old_post.exists() else None
     set_field(meta, "title", f'"{title}"', overwrite=True)
     set_field(meta, "date", old_date or date.today().isoformat(), overwrite=old_date is not None)
@@ -125,29 +125,29 @@ def main():
 
     old_post.write_text("---\n" + "\n".join(meta) + "\n---\n\n" + body.lstrip())
     rel = old_post.relative_to(REPO)
-    print(f"Post escrito em {rel}")
+    print(f"Wrote {rel}")
     if missing:
-        print("Atenção, não achei estes arquivos (o resto do post foi convertido):")
+        print("Warning: these files were not found (the rest of the note was converted):")
         for name in missing:
             print(f"  - {name}")
 
     with tempfile.TemporaryDirectory() as out:
         build = subprocess.run(["mise", "exec", "--", "hugo", "--quiet", "-d", out], cwd=REPO)
     if build.returncode != 0:
-        sys.exit("O build do Hugo falhou. Nada foi commitado.")
+        sys.exit("Hugo build failed. Nothing was committed.")
 
     subprocess.run(["git", "add", str(bundle)], cwd=REPO, check=True)
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO).returncode == 0:
-        print("Nada mudou desde a última publicação.")
+        print("Nothing changed since the last publish.")
         return
-    subprocess.run(["git", "commit", "-q", "-m", f"post: {title}"], cwd=REPO, check=True)
-    print(f"Commit feito. Pra ver antes: cd {REPO} && ./run_hugo.sh")
+    subprocess.run(["git", "commit", "-q", "-m", f"note: {title}"], cwd=REPO, check=True)
+    print(f"Committed. To preview first: cd {REPO} && ./run_hugo.sh")
 
-    if input("Dar push e publicar agora? [s/N] ").strip().lower() == "s":
+    if input("Push and publish now? [y/N] ").strip().lower() == "y":
         subprocess.run(["git", "push"], cwd=REPO, check=True)
-        print("Enviado. O site atualiza em ~2 min: https://nickevangelista.github.io/blog/")
+        print("Pushed. The site updates in about 2 minutes: https://nickevangelista.github.io/blog/")
     else:
-        print("Sem push. Quando quiser: git push")
+        print("Not pushed. When ready: git push")
 
 
 if __name__ == "__main__":

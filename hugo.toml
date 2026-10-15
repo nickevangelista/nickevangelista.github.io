@@ -1,28 +1,52 @@
 baseURL = 'https://nickevangelista.github.io/blog/'
-languageCode = 'pt-br'
-defaultContentLanguage = 'pt'
+languageCode = 'en-us'
+defaultContentLanguage = 'en'
 title = "Nícolas Evangelista"
 
 [params]
-  description = "Ensaios e notas de Nícolas Evangelista sobre computação, tecnologia e as ideias em volta dela."
+  description = "Essays, technical notes, and reading notes by Nícolas Evangelista on computing, technology, and what they change in how people think and decide."
+  dateFormat = "January 2, 2006"
+
+  [params.navbar]
+    displayLogo = false
+
+  [params.footer]
+    displayPoweredBy = false
+    displayCopyright = true
+
+  [params.page.contextMenu]
+    enable = false
+
+  [params.theme]
+    default = "system"
 
 [[menu.main]]
-  name = "Sobre"
-  pageRef = "/sobre"
+  name = "Notes"
+  pageRef = "/notes"
   weight = 1
 
 [[menu.main]]
-  name = "GitHub"
+  name = "About"
+  pageRef = "/about"
   weight = 2
-  url = "https://github.com/nickevangelista"
-  params = { icon = "github" }
 
 [[menu.main]]
   name = "Search"
-  url = "/search/"
   weight = 50
   [menu.main.params]
     type = "search"
+
+[[menu.main]]
+  name = "RSS"
+  url = "/notes/index.xml"
+  weight = 60
+  params = { icon = "rss" }
+
+[[menu.main]]
+  name = "GitHub"
+  url = "https://github.com/nickevangelista"
+  weight = 70
+  params = { icon = "github" }
 
 [module]
   [[module.imports]]
