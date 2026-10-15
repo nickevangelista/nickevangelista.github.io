@@ -1,0 +1,12 @@
+{{- with site.Params.newsletter.username -}}
+<section class="ne-subscribe" aria-labelledby="subscribe-title">
+  <h2 id="subscribe-title" class="ne-label">Get new writing by email</h2>
+  <p>New essays and notes, sent when they're published. No spam, unsubscribe anytime.</p>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/{{ . }}" method="post">
+    <label for="ne-email" class="ne-sr">Email address</label>
+    <input type="email" name="email" id="ne-email" placeholder="you@example.com" autocomplete="email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="ne-fine">Or follow by <a href="{{ "notes/index.xml" | relURL }}">RSS</a>.</p>
+</section>
+{{- end -}}

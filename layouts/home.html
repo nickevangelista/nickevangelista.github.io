@@ -23,5 +23,7 @@
       {{- end }}
       {{ if gt (len $notes) 5 }}<a class="ne-more" href="{{ "notes/" | relURL }}">All notes →</a>{{ end }}
     </section>
+
+    {{ partial "subscribe.html" . }}
   </main>
 {{ end }}

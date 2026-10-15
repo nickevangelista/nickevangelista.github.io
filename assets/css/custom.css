@@ -240,3 +240,65 @@ main#content h1 {
 main#content h1.hx\:text-center {
   text-align: left;
 }
+
+/* Newsletter form (layouts/_partials/subscribe.html). */
+.ne-subscribe {
+  margin-top: 3.5rem;
+  max-width: 40rem;
+}
+.ne-subscribe > p {
+  margin-top: 1rem;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+.ne-subscribe form {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ne-subscribe input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+}
+.ne-subscribe input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.ne-subscribe button {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  background: var(--accent);
+  color: var(--nord6);
+  font-weight: 600;
+  cursor: pointer;
+}
+.dark .ne-subscribe button {
+  color: var(--nord0);
+}
+.ne-subscribe button:hover {
+  filter: brightness(1.08);
+}
+.ne-subscribe .ne-fine {
+  margin-top: 0.75rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.ne-fine a {
+  color: var(--accent);
+}
+.ne-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

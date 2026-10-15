@@ -6,6 +6,10 @@ title = "Nícolas Evangelista"
 [params]
   description = "Essays and notes by Nícolas Evangelista on technology, artificial intelligence, and the decisions around them."
   dateFormat = "January 2, 2006"
+  images = ["og.png"]
+
+  [params.newsletter]
+    username = "nicolasevangelista"
 
   [params.navbar]
     displayLogo = false
