@@ -1,6 +1,6 @@
 # Nícolas Evangelista
 
-Source for [nickevangelista.github.io/blog](https://nickevangelista.github.io/blog/), the personal site of Nícolas Evangelista.
+Source for [nickevangelista.github.io](https://nickevangelista.github.io/), the personal site of Nícolas Evangelista.
 
 ## What this site is
 
@@ -46,7 +46,7 @@ draft: false
 
 ```bash
 mise install    # Hugo and Go at the versions in mise.toml
-./run_hugo.sh   # http://localhost:1313/blog/, drafts included
+./run_hugo.sh   # http://localhost:1313/, drafts included
 ```
 
 ## Design

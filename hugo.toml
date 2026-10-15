@@ -1,4 +1,4 @@
-baseURL = 'https://nickevangelista.github.io/blog/'
+baseURL = 'https://nickevangelista.github.io/'
 languageCode = 'en-us'
 defaultContentLanguage = 'en'
 title = "Nícolas Evangelista"

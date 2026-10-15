@@ -145,7 +145,7 @@ def main():
 
     if input("Push and publish now? [y/N] ").strip().lower() == "y":
         subprocess.run(["git", "push"], cwd=REPO, check=True)
-        print("Pushed. The site updates in about 2 minutes: https://nickevangelista.github.io/blog/")
+        print("Pushed. The site updates in about 2 minutes: https://nickevangelista.github.io/")
     else:
         print("Not pushed. When ready: git push")
 
