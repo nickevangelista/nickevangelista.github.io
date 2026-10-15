@@ -1,8 +1,4 @@
 #!/bin/bash
-export PATH="$PWD/go/bin:$PATH"
-echo "Go version:"
-go version
-echo "Hugo version:"
-./hugo version
-echo "Running hugo:"
-./hugo
+# Servidor local em http://localhost:1313/blog/ (mostra rascunhos também).
+# Hugo e Go vêm do mise.toml; rode `mise install` uma vez antes.
+exec mise exec -- hugo server --buildDrafts

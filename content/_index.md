@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Nícolas Evangelista"
 ---
 
-Welcome to the blog!
+Ensaios, notas técnicas e notas de leitura. [Quem sou eu](sobre/).

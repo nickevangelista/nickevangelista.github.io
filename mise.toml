@@ -1,0 +1,3 @@
+[tools]
+hugo-extended = "0.146.0"
+go = "1.22"

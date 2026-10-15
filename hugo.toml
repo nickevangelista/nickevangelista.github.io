@@ -1,11 +1,19 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://nickevangelista.github.io/blog/'
 languageCode = 'pt-br'
 defaultContentLanguage = 'pt'
-title = "nickevangelista's blog"
+title = "Nícolas Evangelista"
+
+[params]
+  description = "Ensaios e notas de Nícolas Evangelista sobre computação, tecnologia e as ideias em volta dela."
+
+[[menu.main]]
+  name = "Sobre"
+  pageRef = "/sobre"
+  weight = 1
 
 [[menu.main]]
   name = "GitHub"
-  weight = 1
+  weight = 2
   url = "https://github.com/nickevangelista"
   params = { icon = "github" }
 
