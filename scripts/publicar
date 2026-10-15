@@ -112,9 +112,11 @@ def main():
         return dest
 
     def embed(m):
-        target = m.group(1).split("|")[0].strip()
+        target, _, extra = (part.strip() for part in m.group(1).partition("|"))
+        # ![[img.png|300]] is a width (dropped); ![[img.png|A caption]] becomes the alt text.
+        alt = "" if re.fullmatch(r"\d+(x\d+)?", extra) else extra
         if Path(target).suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}:
-            return f"![]({copy_image(target)})"
+            return f"![{alt}]({copy_image(target)})"
         missing.append(target)
         return ""
 
