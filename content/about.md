@@ -1,6 +1,6 @@
 ---
 title: "About"
-description: "Nícolas Evangelista is a computer engineering student in southern Brazil who writes about computing and what it changes in how people think and decide."
+description: "Nícolas Evangelista is a computer engineering student in southern Brazil who writes about technology, artificial intelligence, and the decisions around them."
 aliases:
   - /sobre/
 toc: false
@@ -10,7 +10,7 @@ toc: false
 
 Nícolas Evangelista is a computer engineering student at the State University of Rio Grande do Sul (UERGS), in southern Brazil, and works in software at Infinilabs.
 
-He writes about computing and its consequences: what new tools change in the way people work, think, and decide. Alongside the technical pieces, he publishes reading notes on neuroscience, philosophy, and books. Those are written as notes from a reader, not lessons from an expert.
+He writes about AI and technology and the choices people, companies, and governments make about them, along with technical notes on what he builds. When he writes about a book or paper, it is as a reader taking notes, not an expert giving a lesson.
 
 ## What you'll find here
 

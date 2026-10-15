@@ -1,7 +1,7 @@
 ---
 title: "Nícolas Evangelista"
-description: "Essays, technical notes, and reading notes by Nícolas Evangelista on computing, technology, and what they change in how people think and decide."
-tagline: "Essays and notes on computing, technology, and what they change in how people think and decide."
+description: "Essays and notes by Nícolas Evangelista on technology, artificial intelligence, and the decisions around them."
+tagline: "Essays and notes on technology, artificial intelligence, and the decisions around them."
 ---
 
-Nícolas Evangelista is a computer engineering student at UERGS, in southern Brazil, and works in software at Infinilabs. He writes technical notes on what he builds and reading notes on neuroscience, philosophy, and books.
+Nícolas Evangelista is a computer engineering student at UERGS, in southern Brazil, and works in software at Infinilabs. He writes about AI and technology and the choices people, companies, and governments make about them, along with technical notes on what he builds.

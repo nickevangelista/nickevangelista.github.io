@@ -4,7 +4,7 @@ defaultContentLanguage = 'en'
 title = "Nícolas Evangelista"
 
 [params]
-  description = "Essays, technical notes, and reading notes by Nícolas Evangelista on computing, technology, and what they change in how people think and decide."
+  description = "Essays and notes by Nícolas Evangelista on technology, artificial intelligence, and the decisions around them."
   dateFormat = "January 2, 2006"
 
   [params.navbar]

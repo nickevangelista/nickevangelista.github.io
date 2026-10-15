@@ -9,7 +9,7 @@ A small, serious publication under my own name. It is a place for essays and not
 It publishes three kinds of pieces:
 
 - **Technical notes:** things I built, bugs I fixed, numbers I measured. Short when the subject is short.
-- **Reading notes:** what I took from a book or paper on neuroscience, philosophy, or anything else, and where I got stuck. Framed as a reader's notes, never as expertise.
+- **Reading notes:** what I took from a book or paper, and where I got stuck. Framed as a reader's notes, never as expertise.
 - **Essays:** longer pieces when a subject needs the room.
 
 ## Editorial rules
