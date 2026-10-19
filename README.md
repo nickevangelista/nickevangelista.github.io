@@ -31,6 +31,14 @@ publicar "path/to/Note.md"
 
 The script creates `content/notes/<slug>/index.md`, turns `[[links]]` into plain text, copies images from `![[...]]` next to the note (resized to 1600 px, with GPS and other metadata stripped), checks the build, commits, and asks before pushing. Every push to `main` deploys the site through GitHub Actions (`.github/workflows/hugo.yml`).
 
+To see a note on the real site while you write it:
+
+```bash
+publicar --preview "path/to/Note.md"
+```
+
+It opens the post on a local copy of the site (http://localhost:1313/) as a draft and re-converts it every time the note is saved, so the page reloads on its own. Nothing is written to the repo; Ctrl+C stops it.
+
 To write directly in the repo, create `content/notes/<slug>.md` with:
 
 ```yaml

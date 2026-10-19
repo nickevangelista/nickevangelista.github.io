@@ -2,19 +2,28 @@
 """Publish an Obsidian note as a note on the site.
 
 Usage: publicar "path/to/Note.md"
+       publicar --preview "path/to/Note.md"
 
 Creates content/notes/<slug>/index.md, converts Obsidian-only syntax
 ([[links]], ![[images]], %%comments%%), copies images next to the post (resized to 1600 px and stripped of
 metadata such as GPS location), checks the Hugo build, commits, and asks before pushing.
+
+--preview runs the site locally with the note as a draft and re-converts it
+every time the file is saved, so the browser shows the real rendering while
+you write. Nothing is written to the repo.
 """
 
+import argparse
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unicodedata
 import urllib.parse
+import urllib.request
+import webbrowser
 from datetime import date
 from pathlib import Path
 
@@ -70,27 +79,24 @@ def get_field(lines, key):
     return None
 
 
-def main():
-    if len(sys.argv) != 2:
-        sys.exit(__doc__)
-    note = Path(sys.argv[1]).expanduser().resolve()
-    if not note.is_file():
-        sys.exit(f"Note not found: {note}")
-    vault = find_vault(note)
+def note_slug(note):
+    meta, _ = split_front_matter(note.read_text())
+    title = get_field(meta, "title") or note.stem
+    return title, slugify(title)
 
+
+def convert(note, bundle, draft):
+    """Write the note as bundle/index.md with its images. Returns the missing files."""
+    vault = find_vault(note)
     meta, body = split_front_matter(note.read_text())
     title = get_field(meta, "title") or note.stem
-    slug = slugify(title)
-    bundle = POSTS / slug
-    old_post = bundle / "index.md"
-    if (POSTS / f"{slug}.md").exists():
-        sys.exit(f"content/notes/{slug}.md already exists. Rename the note or delete the old post.")
+    published = POSTS / bundle.name / "index.md"
 
     # Republishing keeps the original date.
-    old_date = get_field(split_front_matter(old_post.read_text())[0], "date") if old_post.exists() else None
+    old_date = get_field(split_front_matter(published.read_text())[0], "date") if published.exists() else None
     set_field(meta, "title", f'"{title}"', overwrite=True)
     set_field(meta, "date", old_date or date.today().isoformat(), overwrite=old_date is not None)
-    set_field(meta, "draft", "false", overwrite=True)
+    set_field(meta, "draft", "true" if draft else "false", overwrite=True)
 
     bundle.mkdir(parents=True, exist_ok=True)
     missing = []
@@ -101,14 +107,17 @@ def main():
             missing.append(name)
             return name
         dest = slugify(src.stem) + src.suffix.lower()
+        out = bundle / dest
+        if out.exists() and out.stat().st_mtime >= src.stat().st_mtime:
+            return dest
         if src.suffix.lower() in RESIZABLE and shutil.which("magick"):
             # -strip drops EXIF, including the GPS position phone photos carry.
             subprocess.run(
-                ["magick", str(src), "-auto-orient", "-strip", "-resize", f"{MAX_WIDTH}x>", str(bundle / dest)],
+                ["magick", str(src), "-auto-orient", "-strip", "-resize", f"{MAX_WIDTH}x>", str(out)],
                 check=True,
             )
         else:
-            shutil.copy2(src, bundle / dest)
+            shutil.copy2(src, out)
         return dest
 
     def embed(m):
@@ -136,13 +145,24 @@ def main():
     body = re.sub(r"!\[\[(.+?)\]\]", embed, body)
     body = re.sub(r"\[\[(.+?)\]\]", wikilink, body)
 
-    old_post.write_text("---\n" + "\n".join(meta) + "\n---\n\n" + body.lstrip())
-    rel = old_post.relative_to(REPO)
-    print(f"Wrote {rel}")
+    (bundle / "index.md").write_text("---\n" + "\n".join(meta) + "\n---\n\n" + body.lstrip())
+    return missing
+
+
+def report_missing(missing):
     if missing:
         print("Warning: these files were not found (the rest of the note was converted):")
         for name in missing:
             print(f"  - {name}")
+
+
+def publish(note):
+    title, slug = note_slug(note)
+    if (POSTS / f"{slug}.md").exists():
+        sys.exit(f"content/notes/{slug}.md already exists. Rename the note or delete the old post.")
+    bundle = POSTS / slug
+    report_missing(convert(note, bundle, draft=False))
+    print(f"Wrote {(bundle / 'index.md').relative_to(REPO)}")
 
     with tempfile.TemporaryDirectory() as out:
         build = subprocess.run(["mise", "exec", "--", "hugo", "--quiet", "-d", out], cwd=REPO)
@@ -154,13 +174,81 @@ def main():
         print("Nothing changed since the last publish.")
         return
     subprocess.run(["git", "commit", "-q", "-m", f"note: {title}"], cwd=REPO, check=True)
-    print(f"Committed. To preview first: cd {REPO} && ./run_hugo.sh")
+    print(f"Committed. To preview first: publicar --preview \"{note}\"")
 
     if input("Push and publish now? [y/N] ").strip().lower() == "y":
         subprocess.run(["git", "push"], cwd=REPO, check=True)
         print("Pushed. The site updates in about 2 minutes: https://nickevangelista.github.io/")
     else:
         print("Not pushed. When ready: git push")
+
+
+def preview(note, port):
+    title, slug = note_slug(note)
+    with tempfile.TemporaryDirectory(prefix="publicar-preview-") as tmp:
+        tmp = Path(tmp)
+        bundle = tmp / "content" / "notes" / slug
+        # The preview mounts its own content dir next to the repo's, hiding the
+        # published copy of this note if there is one. The repo is never touched.
+        (tmp / "preview.toml").write_text(
+            "[module]\n"
+            "  [[module.mounts]]\n"
+            '    source = "content"\n'
+            '    target = "content"\n'
+            f'    excludeFiles = ["notes/{slug}/**", "notes/{slug}.md"]\n'
+            "  [[module.mounts]]\n"
+            f'    source = "{tmp / "content"}"\n'
+            '    target = "content"\n'
+        )
+        report_missing(convert(note, bundle, draft=True))
+        server = subprocess.Popen(
+            ["mise", "exec", "--", "hugo", "server", "--buildDrafts", "--renderToMemory",
+             "--port", str(port), "--config", f"hugo.toml,{tmp / 'preview.toml'}"],
+            cwd=REPO, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+        )
+        url = f"http://localhost:{port}/notes/{slug}/"
+        for _ in range(60):
+            if server.poll() is not None:
+                sys.exit("Hugo failed to start:\n" + server.stderr.read())
+            try:
+                urllib.request.urlopen(url, timeout=1)
+                break
+            except OSError:
+                time.sleep(0.5)
+        print(f"Previewing {title}: {url}")
+        print("Save in Obsidian and the page reloads. Ctrl+C to stop.")
+        webbrowser.open(url)
+
+        last = note.stat().st_mtime
+        try:
+            while server.poll() is None:
+                time.sleep(0.4)
+                mtime = note.stat().st_mtime if note.exists() else last
+                if mtime != last:
+                    last = mtime
+                    report_missing(convert(note, bundle, draft=True))
+                    print(time.strftime("%H:%M:%S"), "updated")
+        except KeyboardInterrupt:
+            print("\nPreview stopped. Nothing was written to the repo.")
+        finally:
+            server.terminate()
+            server.wait()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Publish an Obsidian note on the site.")
+    parser.add_argument("note", help="path to the note (.md)")
+    parser.add_argument("--preview", action="store_true", help="show the note on a local copy of the site while you edit it")
+    parser.add_argument("--port", type=int, default=1313, help="port for --preview (default 1313)")
+    args = parser.parse_args()
+
+    note = Path(args.note).expanduser().resolve()
+    if not note.is_file():
+        sys.exit(f"Note not found: {note}")
+    if args.preview:
+        preview(note, args.port)
+    else:
+        publish(note)
 
 
 if __name__ == "__main__":
